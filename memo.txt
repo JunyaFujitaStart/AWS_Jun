@@ -1,0 +1,108 @@
+全然関係ない雑記も
+
+AWSで作成したサーバーへログイン用のコマンド（ターミナル使用）
+ssh -i ~/.ssh/Udemysample.pem ec2-user@54.95.3.120
+
+管理者権限（多少のファイル操作可能）
+sudo su
+
+秘密鍵をホームディレクトリに（これをやったあと、ファイルのアップロードが可能）
+
+(lsやpwdで現在の位置確認が便利)
+
+ファイルのアップロードコマンド
+scp -i /Users/fujitajunya/.ssh/Udemysample.pem /Users/fujitajunya/Downloads/cat1.jpg ec2-user@54.95.3.120:/home/ec2-user/
+scp -i <pemファイルのパス> <送信するファイルのパス> <送信先ホスト>:<送信先パス>
+例
+scp -i /Users/fujitajunya/.ssh/Udemysample.pem /Users/fujitajunya/Desktop/environment_Front/AWS_Jun/css/index.css ec2-user@54.95.3.120:/home/ec2-user/
+scp -i /Users/fujitajunya/.ssh/Udemysample.pem /Users/fujitajunya/Desktop/environment_Front/AWS_Jun/css/link.css ec2-user@54.95.3.120:/home/ec2-user/
+scp -i /Users/fujitajunya/.ssh/Udemysample.pem /Users/fujitajunya/Desktop/environment_Front/AWS_Jun/css/blogTop.css ec2-user@54.95.3.120:/home/ec2-user/
+scp -i /Users/fujitajunya/.ssh/Udemysample.pem /Users/fujitajunya/Desktop/environment_Front/AWS_Jun/css/modal.css ec2-user@54.95.3.120:/home/ec2-user/
+
+scp -i /Users/fujitajunya/.ssh/Udemysample.pem /Users/fujitajunya/Desktop/environment_Front/AWS_Jun/index.html ec2-user@54.95.3.120:/home/ec2-user/
+scp -i /Users/fujitajunya/.ssh/Udemysample.pem /Users/fujitajunya/Desktop/environment_Front/AWS_Jun/blogTop.html ec2-user@54.95.3.120:/home/ec2-user/
+
+　
+
+フォルダのアップロード
+scp -i /Users/fujitajunya/.ssh/Udemysample.pem -r /Users/fujitajunya/Desktop/environment_Front/AWS_Jun ec2-user@54.95.3.120:/home/ec2-user/
+scp -i <pemファイルのパス> <送信するフォルダのパス> <送信先ホスト>:<送信先パス>　
+例
+scp -i /Users/fujitajunya/.ssh/Udemysample.pem -r /Users/fujitajunya/Desktop/environment_Front/AWS_Jun ec2-user@54.95.3.120:/home/ec2-user/
+
+ログイン後
+mv AWS_Jun ../../var/www/html
+mv -i index.html ../../var/www/html
+
+フォルダごと削除（中身も）
+rm(dir) -rf ファイル・ディレクトリ名
+
+imageのディレクトリ作成
+/home/ec2-user/image/cat1.jpg
+にて配置
+
+/var/www/html/index.html
+上記のファイルindex.htmlの場所から、imageフォルダのcat1.jpgを開く
+（varとhomeは同じディレクトリの階層）
+
+EC2インスタンスにログイン後、次のコマンドでAWS CLIをインストール
+
+その後、EC2インスタンスから、S3への接続を確認。
+aws s3 ls s3://junjunbucket
+
+しかし・・下記理由のため失敗。
+
+https://qiita.com/namikis/items/2e628c0028366c8dd067
+ちょっと読み進めたところ。
+エンドポイントの作成
+　IAMの件と同様、最大限「セキュアな通信」というものを実現させるために作られたシステム。
+　AWSサービスの中で、EC2はVPC（仮想空間的なもの）内にあり、S3はVPC外にある。EC2がVPC外のサービスと
+　通信をするためにはプライベートネットワークからインターネットへの接続を仲介させる必要があるが、エンド
+　ポイントを設定すると、その役割をエンドポイントが担ってくれる。これにより通信の際にインターネットを挟ま
+　ずに済むため、「セキュアな通信」が可能となる。
+
+パブリックアクセス全てを拒否してしまった。。訳もわからずコピペしたために・・（草）
+
+やりたいアクセス制限はこうだ。
+
+1　ユーザ　→　パブリック〜　
+2　特定のユーザ　→　パブリック　→　S3
+
+自分の端末のみ、とりあえずS3へアクセス。画像のアップロード、ダウンロードを試みたい。
+
+その後、選択したユーザのみ、同じ権限を付与したい。
+
+2のパブリック　→　S3　の間の　→　には、VPCのエンドポイント経由が入る。
+
+パブリックIPアドレスを囲っているサーバは、VPC内。つまり、S3が外部のアクセスポイントから、VPCのエンドポイント経由でパブリックにアクセスする。
+
+2　特定のユーザ　→　[ パブリック ]　→　S3　＜この解釈であってる？＞
+
+以下、参考文
+IAMポリシーとバケットポリシーはどちらでも同じようなアクセス権を設定できるが、
+ユーザにアクセス権を設定したい場合はIAMポリシーを使い、
+AWSアカウントやバケットにアクセス権を設定したい場合はバケットポリシーを使う、
+という決まりを作ったほうが運用時に幸せになれそう。
+
+IAMポリシーを使ったアクセス制御のチュートリアルが↓にあるので参考に。
+チュートリアル例: ユーザーポリシーを使用したバケットへのアクセスの制御
+
+
+
+
+
+たぶん動くから！〜（docker起動用）
+https://qiita.com/leafeon00000/items/
+
+docker build -t jun:0.0.2 .
+
+docker container run --name jun --rm -d -p 8090:81 jun:0.0.2
+
+失敗したら・・・
+docker ps -a
+
+docker rm a064de4d6362
+
+docker images
+
+docker rmi 82410489c7bf

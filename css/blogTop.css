@@ -1,0 +1,144 @@
+body {
+  width: 100%;
+  background-color: #2e4de6;
+}
+.logo {
+  background-image: url("../img/cat_PC.jpg");
+  width: 100%;
+  height: 15rem;
+  background-position: right;
+  background-size: 30rem;
+  background-repeat: no-repeat;
+  background-color: #ffffe0;
+  border-radius: 3rem;
+  border: 10px solid #ffffff;
+}
+.logo img {
+  margin-top: 4rem;
+  margin-left: 1rem;
+  background-color: #ffffff;
+}
+#navi {
+  height: 7.5rem;
+  margin: 2rem 0;
+  background-color: #ffffe0;
+  border: 5px solid #ffffff;
+}
+#navi ul {
+  display: table;
+  table-layout: fixed;
+  width:100%;
+  text-align: center;
+}
+li {
+  list-style: none;
+}
+#navi ul li {
+  display: table-cell;
+  padding: 10px 60px 10px 0;
+}
+#navi ul li a {
+  padding: 3.725rem;
+  color: #ffffff;
+}
+#headerImage {
+  display: table;
+  table-layout: fixed;
+  width:100%;
+  text-align: center;
+  border-collapse: separate;
+  border-spacing: 2.5rem 0px;
+}
+
+.box {
+  width: 22%;
+  display: table-cell;
+  text-align: center;
+  border: 5px solid #ffffff;
+  padding: 2rem;
+  border-radius: 3%;
+  background-color: #ffffe0;
+}
+.box a h2 {
+  padding: 1rem;
+}
+.twoColumn {
+  margin: 4rem 30px;
+  display: table;
+  table-layout: fixed;
+  width:100%;
+  border-collapse: separate;
+  border-spacing: 4rem 0px;
+}
+main, sub {
+  display: table-cell;
+  padding: 0px 30px;
+  background-color: #ffffff;
+  border-radius: 3rem;
+  font-size: 16px;
+}
+main, .mainArticle {
+  width: 75%;
+}
+.padding {
+    padding: 20px;
+}
+main {
+  padding: 3rem;
+}
+sub {
+  width: 20%;
+  padding-top: 50px;
+}
+
+footer {
+  padding: 30px;
+  display: table;
+  table-layout: fixed;
+  width:100%;
+  text-align: center;
+  border-collapse: separate;
+  border-spacing: 3rem 0px;
+}
+.others {
+  width: 30%;
+  display: table-cell;
+  padding: 2rem;
+}
+.title{
+  text-align: center;
+  font-size: 2rem;
+}
+.copyright {
+  text-align: center;
+}
+
+.title, .others, .copyright {
+  background-color: #ffffff;
+  padding: 0 2rem 2rem;
+  border-radius: 3rem;
+}
+
+.info img {
+  display: inline-block;
+}
+
+.MidWorks {
+  text-align: center;
+}
+
+.text_slider p{
+  padding-top: 13px;
+  text-align: right;
+  animation : scrollText_slider 15s linear infinite;
+  color: #ffffff;
+}
+
+@keyframes scrollText_slider{
+0% { transform: translateX(0)}
+100% { transform: translateX(-100%)}
+}
+
+.center {
+  text-align: center;
+}
